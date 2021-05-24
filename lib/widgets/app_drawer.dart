@@ -44,7 +44,8 @@ class AppDrawer extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
+          SizedBox(height: 10),
         ],
       ),
     );
