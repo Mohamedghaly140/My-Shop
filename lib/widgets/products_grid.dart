@@ -16,19 +16,23 @@ class ProductsGrid extends StatelessWidget {
     final products =
         showFavs ? productsData.getFavorites : productsData.getAllProducts;
 
-    return GridView.builder(
-      padding: const EdgeInsets.all(10),
-      itemCount: products.length,
-      itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-        value: products[i],
-        child: ProductItem(),
-      ),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 3 / 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
-    );
+    return showFavs && productsData.getFavorites.length == 0
+        ? Center(
+            child: Text('You have no favorites items'),
+          )
+        : GridView.builder(
+            padding: const EdgeInsets.all(10),
+            itemCount: products.length,
+            itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
+              value: products[i],
+              child: ProductItem(),
+            ),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 3 / 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+          );
   }
 }

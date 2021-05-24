@@ -42,6 +42,9 @@ class CartScreen extends StatelessWidget {
                   TextButton(
                     child: Text('Order Now'),
                     onPressed: () {
+                      if (cart.items.values.toList().length == 0) {
+                        return null;
+                      }
                       order.addOrder(
                         cart.items.values.toList(),
                         cart.totalAmount,
@@ -56,18 +59,22 @@ class CartScreen extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Expanded(
-            child: ListView.builder(
-              itemBuilder: (ctx, i) {
-                return CartItem(
-                  cart.items.values.toList()[i].id,
-                  cart.items.keys.toList()[i],
-                  cart.items.values.toList()[i].title,
-                  cart.items.values.toList()[i].price,
-                  cart.items.values.toList()[i].quantity,
-                );
-              },
-              itemCount: cart.itemsCount,
-            ),
+            child: cart.items.values.toList().length == 0
+                ? Center(
+                    child: Text('You have no items in cart, maybe start added'),
+                  )
+                : ListView.builder(
+                    itemBuilder: (ctx, i) {
+                      return CartItem(
+                        cart.items.values.toList()[i].id,
+                        cart.items.keys.toList()[i],
+                        cart.items.values.toList()[i].title,
+                        cart.items.values.toList()[i].price,
+                        cart.items.values.toList()[i].quantity,
+                      );
+                    },
+                    itemCount: cart.itemsCount,
+                  ),
           ),
         ],
       ),
