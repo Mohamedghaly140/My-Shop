@@ -50,8 +50,29 @@ class Products with ChangeNotifier {
     return _products.firstWhere((p) => p.id == id);
   }
 
-  void addProduct() {
-    // this._products.add(value);
+  void addProduct(Product product) {
+    var newProduct = Product(
+      id: DateTime.now().toString(),
+      title: product.title,
+      description: product.description,
+      price: product.price,
+      imageUrl: product.imageUrl,
+    );
+    _products.add(newProduct);
+    // _products.insert(0, newProduct); at the start of the list
+    notifyListeners();
+  }
+
+  void updateProduct(String id, Product newProduct) {
+    final prodIndex = _products.indexWhere((prod) => prod.id == id);
+    if (prodIndex >= 0) {
+      _products[prodIndex] = newProduct;
+      notifyListeners();
+    }
+  }
+
+  void deleteProduct(String prodId) {
+    _products.removeWhere((prod) => prod.id == prodId);
     notifyListeners();
   }
 }
