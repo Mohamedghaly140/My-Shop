@@ -10,6 +10,10 @@ import '../screens/product_detail_screen.dart';
 class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
 
+  Future<void> _refreshProducts(BuildContext context) async {
+    await Provider.of<Products>(context, listen: false).fetchAndSetProducts();
+  }
+
   @override
   Widget build(BuildContext context) {
     final products = Provider.of<Products>(context);
@@ -28,29 +32,32 @@ class UserProductsScreen extends StatelessWidget {
         ],
       ),
       drawer: AppDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: ListView.builder(
-          itemCount: products.getAllProducts.length,
-          itemBuilder: (_, i) => Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).pushNamed(
-                    ProductDetailScreen.routeName,
-                    arguments: products.getAllProducts[i].id,
-                  );
-                },
-                child: UserProduct(
-                  products.getAllProducts[i].id,
-                  products.getAllProducts[i].title,
-                  products.getAllProducts[i].imageUrl,
+      body: RefreshIndicator(
+        onRefresh: () => _refreshProducts(context),
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: ListView.builder(
+            itemCount: products.getAllProducts.length,
+            itemBuilder: (_, i) => Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(
+                      ProductDetailScreen.routeName,
+                      arguments: products.getAllProducts[i].id,
+                    );
+                  },
+                  child: UserProduct(
+                    products.getAllProducts[i].id,
+                    products.getAllProducts[i].title,
+                    products.getAllProducts[i].imageUrl,
+                  ),
                 ),
-              ),
-              Divider(),
-            ],
+                Divider(),
+              ],
+            ),
           ),
         ),
       ),

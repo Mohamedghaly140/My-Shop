@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../screens/cart_screen.dart';
 
 import '../providers/cart.dart';
+import '../providers/products.dart';
 
 import '../widgets/badge.dart';
 import '../widgets/app_drawer.dart';
@@ -21,6 +22,26 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showFavoritesOnly = false;
+  var _isLoading = false;
+  var _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Products>(context, listen: false).fetchAndSetProducts().then(
+        (_) {
+          setState(() {
+            _isLoading = false;
+          });
+        },
+      );
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   void toggleFavorites(FilterOptions value) {
     setState(() {
@@ -70,7 +91,9 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductsGrid(_showFavoritesOnly),
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator.adaptive())
+          : ProductsGrid(_showFavoritesOnly),
     );
   }
 }
