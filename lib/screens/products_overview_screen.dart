@@ -31,7 +31,10 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<Products>(context, listen: false).fetchAndSetProducts().then(
+      Provider.of<Products>(
+        context,
+        listen: false,
+      ).fetchAndSetProducts().then(
         (_) {
           setState(() {
             _isLoading = false;
@@ -92,7 +95,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
       ),
       drawer: AppDrawer(),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator.adaptive())
+          ? Center(child: CircularProgressIndicator())
           : ProductsGrid(_showFavoritesOnly),
     );
   }

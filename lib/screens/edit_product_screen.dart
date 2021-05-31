@@ -148,7 +148,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         ],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator.adaptive())
+          ? Center(child: CircularProgressIndicator())
           : GestureDetector(
               onTap: () {
                 FocusScopeNode currentFocus = FocusScope.of(context);
